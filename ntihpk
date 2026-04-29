@@ -161,8 +161,8 @@ end
 
 -- ── URLs codificadas ───────────────────────────────────────────────────────
 local RAW_KEY_URL     = xorEncode("https://raw.githubusercontent.com/graveszzx/scripts/refs/heads/main/keyproscript")
-local RAW_SCRIPT1_URL = xorEncode("https://raw.githubusercontent.com/graveszzx/jsosjsks/refs/heads/main/mithubjuptadedrize1")
-local RAW_SCRIPT2_URL = xorEncode("https://raw.githubusercontent.com/graveszzx/jsosjsks/refs/heads/main/viplencepsrrykw1")
+local RAW_SCRIPT1_URL = xorEncode("https://raw.githubusercontent.com/graveszzx/jsosjsks/refs/heads/main/mithubjuptadedrize")
+local RAW_SCRIPT2_URL = xorEncode("https://raw.githubusercontent.com/graveszzx/jsosjsks/refs/heads/main/viplencepsrrykw")
 
 -- ── Checagem inicial ───────────────────────────────────────────────────────
 antiHookCheck()
