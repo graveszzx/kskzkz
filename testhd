@@ -1,14 +1,22 @@
 local hookDetected = false
-local _HttpGet = newcclosure(game.HttpGet)
-local _HttpGetAsync = newcclosure(game.HttpGetAsync)
 
-local function isHooked(original, current)
-    local ok1, info1 = pcall(debug.getinfo, original, "S")
-    local ok2, info2 = pcall(debug.getinfo, current, "S")
-    if ok1 and ok2 and info1 and info2 then
-        return info1.what ~= info2.what
+local real_HttpGet = game.HttpGet
+local real_HttpGetAsync = game.HttpGetAsync
+
+local function isHooked()
+    if game.HttpGet ~= real_HttpGet then return true end
+    if game.HttpGetAsync ~= real_HttpGetAsync then return true end
+
+    -- k lclosure (lua function = hook)
+    if islclosure then
+        if islclosure(game.HttpGet) then return true end
+        if islclosure(game.HttpGetAsync) then return true end
     end
-    if islclosure and iscclosure then return islclosure(current) end
+
+    -- checa k: debug.getinfo como backup
+    local ok, info = pcall(debug.getinfo, game.HttpGet, "S")
+    if ok and info and info.what == "Lua" then return true end
+
     return false
 end
 
@@ -33,7 +41,7 @@ local function showKickScreen()
 end
 
 local function antiHookCheck()
-    if isHooked(_HttpGet, game.HttpGet) or isHooked(_HttpGetAsync, game.HttpGetAsync) then
+    if isHooked() then
         showKickScreen()
         error("", 0)
     end
