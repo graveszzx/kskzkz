@@ -1,0 +1,49 @@
+local hookDetected = false
+local _HttpGet = newcclosure(game.HttpGet)
+local _HttpGetAsync = newcclosure(game.HttpGetAsync)
+
+local function isHooked(original, current)
+    local ok1, info1 = pcall(debug.getinfo, original, "S")
+    local ok2, info2 = pcall(debug.getinfo, current, "S")
+    if ok1 and ok2 and info1 and info2 then
+        return info1.what ~= info2.what
+    end
+    if islclosure and iscclosure then return islclosure(current) end
+    return false
+end
+
+local function showKickScreen()
+    if hookDetected then return end
+    hookDetected = true
+    local g = Instance.new("ScreenGui")
+    g.Name = "MitHubKickGui"
+    g.Parent = game.CoreGui
+    local f = Instance.new("Frame")
+    f.Size = UDim2.new(1,0,1,0)
+    f.BackgroundColor3 = Color3.fromRGB(0,0,0)
+    f.Parent = g
+    local t = Instance.new("TextLabel")
+    t.Size = UDim2.new(1,0,1,0)
+    t.BackgroundTransparency = 1
+    t.Text = "hook detected"
+    t.TextColor3 = Color3.fromRGB(255,0,0)
+    t.Font = Enum.Font.GothamBold
+    t.TextScaled = true
+    t.Parent = f
+end
+
+local function antiHookCheck()
+    if isHooked(_HttpGet, game.HttpGet) or isHooked(_HttpGetAsync, game.HttpGetAsync) then
+        showKickScreen()
+        error("", 0)
+    end
+end
+
+task.spawn(function()
+    while true do
+        task.wait(1)
+        pcall(antiHookCheck)
+    end
+end)
+
+return antiHookCheck
